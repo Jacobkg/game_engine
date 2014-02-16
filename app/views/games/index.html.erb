@@ -1,1 +1,6 @@
 <%= simple_format(@board_string) %>
+
+<%= link_to "left", move_games_path(direction: "left"), method: :put, id: "move-left" %>
+<%= link_to "right", move_games_path(direction: "right"), method: :put, id: "move-right" %>
+<%= link_to "up", move_games_path(direction: "up"), method: :put, id: "move-up" %>
+<%= link_to "down", move_games_path(direction: "down"), method: :put, id: "move-down" %>

@@ -3,9 +3,14 @@ MyProject::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-   root 'games#index'
+  root 'games#index'
 
-   resources :games
+  resources :games do
+    collection do
+      put :move
+    end
+  end
+
 
   # Example of regular route:
   #   get 'products/:id' => 'catalog#view'

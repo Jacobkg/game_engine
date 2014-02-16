@@ -10,6 +10,35 @@ class GamesController < ApplicationController
     end
   end
 
+  def move
+    board_string = File.read(".board")
+    board = board_string.lines.map {|line| line.strip.split("")}
+    board_x, board_y = find_coordinates(board, "X")
+    board[board_x][board_y] = "-"
+    if params[:direction] == "right"
+      board[board_x][[9, board_y+1].min] = "X"
+    elsif params[:direction] == "left"
+      board[board_x][[0, board_y-1].max] = "X"
+    elsif params[:direction] == "down"
+      board[[9, board_x + 1].min][board_y] = "X"
+    else
+      board[[0, board_x - 1].max][board_y] = "X"
+    end
+    @board_string = draw_board(board)
+    File.open('.board', 'w') {|file| file.write(@board_string)}
+    redirect_to action: "index"
+  end
+
+  private
+
+  def find_coordinates(board, piece)
+    0.upto(9) do |i|
+      0.upto(9) do |j|
+        return [i,j] if board[i][j] == piece
+      end
+    end
+  end
+
   def generate_board
     board = Array.new(10) { Array.new(10) { "-" } }
     10.times do
