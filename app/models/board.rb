@@ -29,22 +29,24 @@ class Board
   end
 
   def move!(direction)
-    board_x, board_y = player_coordinates
+    board_x, board_y = player_coordinates(player_to_move)
     if direction == "right"
-      new_x, new_y = board_x, [GRID_SIZE - 1, board_y+1].min
+      new_x, new_y = board_x, board_y + 1
     elsif direction == "left"
-      new_x, new_y = board_x, [0, board_y-1].max
+      new_x, new_y = board_x, board_y - 1
     elsif direction == "down"
-      new_x, new_y = [GRID_SIZE - 1, board_x + 1].min, board_y
+      new_x, new_y = board_x + 1, board_y
     else
-      new_x, new_y = [0, board_x - 1].max, board_y
+      new_x, new_y = board_x - 1, board_y
     end
-    if @board[new_x][new_y] == "*"
-      player_to_move == "X" ? @x_score += 1 : @y_score += 1
+    if legal_move?(new_x, new_y)
+      if @board[new_x][new_y] == "*"
+        player_to_move == "X" ? @x_score += 1 : @y_score += 1
+      end
+      @board[board_x][board_y] = "-"
+      @board[new_x][new_y] = player_to_move
     end
-    @board[board_x][board_y] = "-"
-    @board[new_x][new_y] = player_to_move
-    @player_to_move = player_to_move == "X" ? "O" : "X"
+    @player_to_move = other_player
     save!
   end
 
@@ -73,10 +75,20 @@ class Board
 
   private
 
-    def player_coordinates
+    def legal_move?(new_x, new_y)
+      return false if new_x < 0 || new_y < 0 || new_x >= GRID_SIZE || new_y >= GRID_SIZE
+      return false if [new_x, new_y] == player_coordinates(other_player)
+      return true
+    end
+
+    def other_player
+      player_to_move == "X" ? "O" : "X"
+    end
+
+    def player_coordinates(player)
       0.upto(GRID_SIZE - 1) do |i|
         0.upto(GRID_SIZE - 1) do |j|
-          return [i,j] if @board[i][j] == player_to_move
+          return [i,j] if @board[i][j] == player
         end
       end
     end
