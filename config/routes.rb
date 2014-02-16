@@ -8,6 +8,7 @@ MyProject::Application.routes.draw do
   resources :games do
     collection do
       put :move
+      delete :reset
     end
   end
 

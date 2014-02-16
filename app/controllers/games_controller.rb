@@ -12,6 +12,11 @@ class GamesController < ApplicationController
     redirect_to action: "index"
   end
 
+  def reset
+    Board.create!
+    redirect_to action: "index"
+  end
+
   def determine_ai_move
     board_array = @board.board
     x, y = @board.player_coordinates("O")
