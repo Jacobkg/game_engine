@@ -1,4 +1,10 @@
-<%= simple_format(@board_string) %>
+<%= simple_format(@board.display_string) %>
+
+Score:<br>
+X: <%= @board.x_score %><br>
+Y: <%= @board.y_score %><br>
+<br>
+<%= @board.player_to_move %> to move:<br>
 
 <%= link_to "left", move_games_path(direction: "left"), method: :put, id: "move-left" %>
 <%= link_to "right", move_games_path(direction: "right"), method: :put, id: "move-right" %>
