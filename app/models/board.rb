@@ -2,7 +2,7 @@ class Board
 
   GRID_SIZE = 20
 
-  attr_reader :player_to_move, :x_score, :y_score
+  attr_reader :board, :player_to_move, :x_score, :y_score
   def initialize(board, player_to_move, x_score, y_score)
     @board = board
     @player_to_move = player_to_move
@@ -73,6 +73,14 @@ class Board
     board
   end
 
+  def player_coordinates(player)
+    0.upto(GRID_SIZE - 1) do |i|
+      0.upto(GRID_SIZE - 1) do |j|
+        return [i,j] if @board[i][j] == player
+      end
+    end
+  end
+
   private
 
     def legal_move?(new_x, new_y)
@@ -83,14 +91,6 @@ class Board
 
     def other_player
       player_to_move == "X" ? "O" : "X"
-    end
-
-    def player_coordinates(player)
-      0.upto(GRID_SIZE - 1) do |i|
-        0.upto(GRID_SIZE - 1) do |j|
-          return [i,j] if @board[i][j] == player
-        end
-      end
     end
 
 end
