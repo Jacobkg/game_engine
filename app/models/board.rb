@@ -1,5 +1,7 @@
 class Board
 
+  GRID_SIZE = 20
+
   attr_reader :player_to_move, :x_score, :y_score
   def initialize(board, player_to_move, x_score, y_score)
     @board = board
@@ -29,11 +31,11 @@ class Board
   def move!(direction)
     board_x, board_y = player_coordinates
     if direction == "right"
-      new_x, new_y = board_x, [9, board_y+1].min
+      new_x, new_y = board_x, [GRID_SIZE - 1, board_y+1].min
     elsif direction == "left"
       new_x, new_y = board_x, [0, board_y-1].max
     elsif direction == "down"
-      new_x, new_y = [9, board_x + 1].min, board_y
+      new_x, new_y = [GRID_SIZE - 1, board_x + 1].min, board_y
     else
       new_x, new_y = [0, board_x - 1].max, board_y
     end
@@ -48,8 +50,8 @@ class Board
 
   def display_string
     board_output = ""
-    0.upto(9) do |i|
-      0.upto(9) do |j|
+    0.upto(GRID_SIZE - 1) do |i|
+      0.upto(GRID_SIZE - 1) do |j|
         board_output << @board[i][j]
       end
       board_output << "\n"
@@ -58,22 +60,22 @@ class Board
   end
 
   def self.generate_random_board
-    board = Array.new(10) { Array.new(10) { "-" } }
-    10.times do
-      rand_x = rand(10)
-      rand_y = rand(10)
+    board = Array.new(GRID_SIZE) { Array.new(GRID_SIZE) { "-" } }
+    GRID_SIZE.times do
+      rand_x = rand(GRID_SIZE)
+      rand_y = rand(GRID_SIZE)
       board[rand_x][rand_y] = "*"
     end
     board[0][0] = "X"
-    board[9][9] = "O"
+    board[GRID_SIZE - 1][GRID_SIZE - 1] = "O"
     board
   end
 
   private
 
     def player_coordinates
-      0.upto(9) do |i|
-        0.upto(9) do |j|
+      0.upto(GRID_SIZE - 1) do |i|
+        0.upto(GRID_SIZE - 1) do |j|
           return [i,j] if @board[i][j] == player_to_move
         end
       end
