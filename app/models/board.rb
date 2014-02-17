@@ -26,10 +26,13 @@ class Board
               board_json["x_score"], board_json["y_score"], board_json["player_to_move"])
   end
 
+  def to_json
+    { game_id: game_id, stars: @stars, x_position: x_position, y_position: y_position,
+      x_score: x_score, y_score: y_score, player_to_move: player_to_move }.to_json
+  end
+
   def save!
-    board_json = { game_id: game_id, stars: @stars, x_position: x_position, y_position: y_position,
-                   x_score: x_score, y_score: y_score, player_to_move: player_to_move }.to_json
-    File.open('.board', 'w') {|file| file.write(board_json)}
+    File.open('.board', 'w') {|file| file.write(self.to_json)}
   end
 
   def move!(direction)
@@ -75,10 +78,12 @@ class Board
 
   def self.generate_random_stars
     star_list = []
-    GRID_SIZE.times do
+    loop do
       rand_x = rand(GRID_SIZE)
       rand_y = rand(GRID_SIZE)
+      next if [rand_x, rand_y].in?([[0,0], [GRID_SIZE - 1, GRID_SIZE - 1]] + star_list)
       star_list << [rand_x, rand_y]
+      break if star_list.count == 21
     end
     star_list.uniq
   end

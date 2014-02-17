@@ -18,7 +18,7 @@ class GamesController < ApplicationController
   end
 
   def get_move_from_server
-    HTTParty.get("http://localhost:3001/moves").parsed_response["move"]
+    HTTParty.get("http://localhost:3001/moves", query: { board: @board.to_json }).parsed_response["move"]
   end
 
   def determine_ai_move
