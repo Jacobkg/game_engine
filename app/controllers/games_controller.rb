@@ -7,7 +7,7 @@ class GamesController < ApplicationController
   def move
     @board = Board.load
     @board.move!(params[:direction])
-    ai_move = determine_ai_move
+    ai_move = get_move_from_server
     @board.move!(ai_move)
     redirect_to action: "index"
   end
@@ -15,6 +15,10 @@ class GamesController < ApplicationController
   def reset
     Board.create!
     redirect_to action: "index"
+  end
+
+  def get_move_from_server
+    HTTParty.get("http://localhost:3001/moves").parsed_response["move"]
   end
 
   def determine_ai_move
