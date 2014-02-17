@@ -1,40 +1,38 @@
 class GamesController < ApplicationController
 
+  def new
+    if File.exists?(".game")
+      game_json = JSON.parse(File.read(".game"))
+      @previous_x = game_json["x_player"]
+      @previous_y = game_json["y_player"]
+    else
+      @previous_x = "http://protected-atoll-1298.herokuapp.com/moves"
+      @previous_y = "http://protected-atoll-1298.herokuapp.com/moves"
+    end
+  end
+
+  def create
+    game_json = {x_player: params[:x_player], y_player: params[:y_player]}.to_json
+    File.open('.game', 'w') {|file| file.write(game_json)}
+    Board.create!
+    redirect_to action: "index"
+  end
+
   def index
-    @board = Board.load || Board.create!
+    @board = Board.load
+    game_json = JSON.parse(File.read(".game"))
+    if @board.player_to_move == "X"
+      move = HTTParty.get(game_json["x_player"], query: { board: @board.to_json }).parsed_response["move"]
+    else
+      move = HTTParty.get(game_json["y_player"], query: { board: @board.to_json }).parsed_response["move"]
+    end
+    @board.move!(move)
   end
 
   def move
     @board = Board.load
     @board.move!(params[:direction])
-    ai_move = get_move_from_server
-    @board.move!(ai_move)
     redirect_to action: "index"
-  end
-
-  def reset
-    Board.create!
-    redirect_to action: "index"
-  end
-
-  def get_move_from_server
-    HTTParty.get("http://localhost:3001/moves", query: { board: @board.to_json }).parsed_response["move"]
-  end
-
-  def determine_ai_move
-    board_array = @board.board
-    x, y = @board.player_coordinates("O")
-    Rails.logger.debug("Coord: #{[x,y].inspect}")
-    Rails.logger.debug(board_array[x])
-    if board_array[x].include?("*")
-      if board_array[x][0..y].include?("*")
-        return "left"
-      else
-        return "right"
-      end
-    else
-      return "up"
-    end
   end
 
 end

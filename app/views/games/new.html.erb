@@ -1,0 +1,11 @@
+<h1> New Game </h1>
+
+<%= form_tag(games_path) do %>
+  <%= label_tag(:x_player, "Player X AI URL:") %>
+  <%= text_field_tag(:x_player, @previous_x, size: 100) %>
+  <br>
+  <%= label_tag(:y_player, "Player Y AI URL:") %>
+  <%= text_field_tag(:y_player, @previous_y, size: 100) %>
+  <br>
+  <%= submit_tag("Start Game") %>
+<% end %>

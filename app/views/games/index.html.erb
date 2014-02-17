@@ -1,4 +1,4 @@
-<%= link_to "New Game", reset_games_path, method: :delete %>
+<%= link_to "New Game", new_game_path %>
 <%= simple_format(@board.display_string) %>
 
 Score:<br>
@@ -10,10 +10,5 @@ Y: <%= @board.y_score %><br>
 <% elsif @board.y_score >= 11 %>
   Y Wins!
 <% else %>
-  <%= @board.player_to_move %> to move:<br>
-  (You can use arrow keys)<br>
-  <%= link_to "left", move_games_path(direction: "left"), method: :put, id: "move-left" %>
-  <%= link_to "right", move_games_path(direction: "right"), method: :put, id: "move-right" %>
-  <%= link_to "up", move_games_path(direction: "up"), method: :put, id: "move-up" %>
-  <%= link_to "down", move_games_path(direction: "down"), method: :put, id: "move-down" %>
+  <div class="reload-page"></div>
 <% end %>

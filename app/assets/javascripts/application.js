@@ -35,6 +35,10 @@ ready = function() {
           break;
     }
   };
+
+  if ($('.reload-page').length > 0) {
+    window.setTimeout(location.reload(), 500);
+  }
 }
 
 $(document).ready(ready);
