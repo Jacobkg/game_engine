@@ -70,6 +70,7 @@ class Board
         else
           board_output << "-"
         end
+        board_output << " "
       end
       board_output << "\n"
     end
