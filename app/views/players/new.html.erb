@@ -1,0 +1,9 @@
+<h1>Register Player</h1>
+
+<%= form_for Player.new do |f| %>
+  <%= label_tag(:name, "Name") %>
+  <%= f.text_field :name %><br>
+  <%= label_tag(:url, "Url") %>
+  <%= f.text_field :url, size: 75 %><br>
+  <%= f.submit "Register" %>
+<% end %>

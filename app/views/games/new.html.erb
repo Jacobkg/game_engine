@@ -1,11 +1,13 @@
+<%= link_to "Register Player", new_player_path %>
+
 <h1> New Game </h1>
 
 <%= form_tag(games_path) do %>
-  <%= label_tag(:x_player, "Player X AI URL:") %>
-  <%= text_field_tag(:x_player, @previous_x, size: 100) %>
+  <%= label_tag(:player_1, "Player 1") %>
+  <%= select_tag(:player_1, options_for_select(Player.all.map{|p| [p.name, p.id]})) %>
   <br>
-  <%= label_tag(:y_player, "Player Y AI URL:") %>
-  <%= text_field_tag(:y_player, @previous_y, size: 100) %>
+  <%= label_tag(:player_2, "Player 2") %>
+  <%= select_tag(:player_2, options_for_select(Player.all.map{|p| [p.name, p.id]})) %>
   <br>
   <%= submit_tag("Start Game") %>
 <% end %>

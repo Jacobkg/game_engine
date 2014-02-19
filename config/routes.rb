@@ -3,7 +3,7 @@ MyProject::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'games#index'
+  root 'games#new'
 
   resources :games do
     collection do
@@ -11,6 +11,8 @@ MyProject::Application.routes.draw do
       delete :reset
     end
   end
+
+  resources :players
 
 
   # Example of regular route:

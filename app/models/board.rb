@@ -13,17 +13,12 @@ class Board
     @player_to_move = player_to_move
   end
 
-  def self.create!
-    board = Board.new(1, generate_random_stars, [0,0], [GRID_SIZE - 1, GRID_SIZE - 1], 0, 0, "X")
-    board.save!
-    board
+  def self.generate_random
+    Board.new(1, generate_random_stars, [0,0], [GRID_SIZE - 1, GRID_SIZE - 1], 0, 0, "X")
   end
 
-  def self.load
-    return nil unless File.exists?(".board")
-    board_json = JSON.parse(File.read('.board'))
-    Board.new(board_json["game_id"], board_json["stars"], board_json["x_position"], board_json["y_position"],
-              board_json["x_score"], board_json["y_score"], board_json["player_to_move"])
+  def copy
+    Board.new(game_id, stars.dup, x_position, y_position, x_score, y_score, "X")
   end
 
   def to_json
@@ -31,8 +26,10 @@ class Board
       x_score: x_score, y_score: y_score, player_to_move: player_to_move }.to_json
   end
 
-  def save!
-    File.open('.board', 'w') {|file| file.write(self.to_json)}
+  def winner
+    return "X" if x_score > 10
+    return "Y" if y_score > 10
+    return nil
   end
 
   def move!(direction)
@@ -54,7 +51,6 @@ class Board
       update_player_position(new_x, new_y)
     end
     @player_to_move = other_player
-    save!
   end
 
   def display_string
