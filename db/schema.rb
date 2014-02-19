@@ -18,7 +18,7 @@ ActiveRecord::Schema.define(version: 20140219031810) do
     t.integer  "y_score"
     t.string   "x_position"
     t.string   "y_position"
-    t.string   "stars"
+    t.text     "stars"
     t.string   "player_to_move"
     t.datetime "created_at"
     t.datetime "updated_at"

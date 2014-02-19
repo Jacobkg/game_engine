@@ -5,7 +5,7 @@ class AddBoardTable < ActiveRecord::Migration
       t.integer :y_score
       t.string :x_position
       t.string :y_position
-      t.string :stars
+      t.text :stars
       t.string :player_to_move
 
       t.timestamps
