@@ -1,0 +1,13 @@
+<%= link_to "Register Player", new_player_path %>
+
+<h1> New Match </h1>
+
+<%= form_for Match.new do |f| %>
+  <%= label_tag(:player1_id, "Player 1") %>
+  <%= f.select(:player1_id, options_for_select(Player.all.map{|p| [p.name, p.id]})) %>
+  <br>
+  <%= label_tag(:player2_id, "Player 2") %>
+  <%= f.select(:player2_id, options_for_select(Player.all.map{|p| [p.name, p.id]})) %>
+  <br>
+  <%= submit_tag("Start Match") %>
+<% end %>

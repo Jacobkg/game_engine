@@ -11,7 +11,26 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140219023330) do
+ActiveRecord::Schema.define(version: 20140219031810) do
+
+  create_table "boards", force: true do |t|
+    t.integer  "x_score"
+    t.integer  "y_score"
+    t.string   "x_position"
+    t.string   "y_position"
+    t.string   "stars"
+    t.string   "player_to_move"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "matches", force: true do |t|
+    t.integer  "board_id"
+    t.integer  "player1_id"
+    t.integer  "player2_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "players", force: true do |t|
     t.string   "name"

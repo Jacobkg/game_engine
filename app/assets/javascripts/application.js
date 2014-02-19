@@ -17,28 +17,11 @@
 
 var ready;
 ready = function() {
-  document.onkeydown = function(evt) {
-    evt = evt || window.event;
-    console.log(evt.keyCode);
-    switch (evt.keyCode) {
-        case 37:
-          $('#move-left').click();
-          break;
-        case 39:
-          $('#move-right').click();
-          break;
-        case 40:
-          $('#move-down').click();
-          break;
-        case 38:
-          $('#move-up').click();
-          break;
-    }
-  };
 
   if ($('.reload-page').length > 0) {
-    window.setTimeout(location.reload(), 500);
+    window.setTimeout(location.reload(), 1000);
   }
+
 }
 
 $(document).ready(ready);

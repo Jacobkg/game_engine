@@ -1,28 +1,34 @@
-class Board
+class Board < ActiveRecord::Base
+  serialize :x_position
+  serialize :y_position
+  serialize :stars
 
   GRID_SIZE = 20
 
-  attr_reader :game_id, :player_to_move, :x_score, :y_score, :x_position, :y_position
-  def initialize(game_id, stars, x_position, y_position, x_score, y_score, player_to_move)
-    @game_id = game_id
-    @stars = stars
-    @x_position = x_position
-    @y_position = y_position
-    @x_score = x_score
-    @y_score = y_score
-    @player_to_move = player_to_move
+  def save_stars
+    @original_stars = self.stars
+  end
+
+  def reset!
+    update! stars: @original_stars,
+            x_position: [0,0],
+            y_position: [GRID_SIZE - 1, GRID_SIZE - 1],
+            x_score: 0,
+            y_score: 0,
+            player_to_move: "X"
   end
 
   def self.generate_random
-    Board.new(1, generate_random_stars, [0,0], [GRID_SIZE - 1, GRID_SIZE - 1], 0, 0, "X")
-  end
-
-  def copy
-    Board.new(game_id, stars.dup, x_position, y_position, x_score, y_score, "X")
+    Board.create! stars: generate_random_stars,
+                  x_position: [0,0],
+                  y_position: [GRID_SIZE - 1, GRID_SIZE - 1],
+                  x_score: 0,
+                  y_score: 0,
+                  player_to_move: "X"
   end
 
   def to_json
-    { game_id: game_id, stars: @stars, x_position: x_position, y_position: y_position,
+    { stars: stars, x_position: x_position, y_position: y_position,
       x_score: x_score, y_score: y_score, player_to_move: player_to_move }.to_json
   end
 
@@ -44,13 +50,14 @@ class Board
       new_x, new_y = board_x - 1, board_y
     end
     if legal_move?(new_x, new_y)
-      if @stars.include?([new_x, new_y])
-        player_to_move == "X" ? @x_score += 1 : @y_score += 1
-        @stars.delete([new_x, new_y])
+      if stars.include?([new_x, new_y])
+        player_to_move == "X" ? self.x_score += 1 : self.y_score += 1
+        stars.delete([new_x, new_y])
       end
       update_player_position(new_x, new_y)
     end
-    @player_to_move = other_player
+    self.player_to_move = other_player
+    save!
   end
 
   def display_string
@@ -61,7 +68,7 @@ class Board
           board_output << "X"
         elsif [i,j] == y_position
           board_output << "Y"
-        elsif @stars.include?([i,j])
+        elsif stars.include?([i,j])
           board_output << "*"
         else
           board_output << "-"
@@ -97,9 +104,9 @@ class Board
 
     def update_player_position(new_x, new_y)
       if player_to_move == "X"
-        @x_position = [new_x, new_y]
+        self.x_position = [new_x, new_y]
       else
-        @y_position = [new_x, new_y]
+        self.y_position = [new_x, new_y]
       end
     end
 

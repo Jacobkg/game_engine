@@ -1,15 +1,15 @@
 class RunMatchJob
   @queue = :match
 
-  def self.perform(player_1_id, player_2_id)
-    player_1 = Player.find(player_1_id)
-    player_2 = Player.find(player_2_id)
+  def self.perform(match_id)
+    match = Match.find(match_id)
+    player1 = match.player1
+    player2 = match.player2
+    board = match.board
+    board.save_stars
 
     #Game1
-    board = Board.generate_random
-    board_2 = board.copy
-
-    x_player, y_player = player_1, player_2
+    x_player, y_player = player1, player2
     loop do
       break if board.winner
       if board.player_to_move == "X"
@@ -18,6 +18,7 @@ class RunMatchJob
         move = HTTParty.get(y_player.url, query: { board: board.to_json }).parsed_response["move"]
       end
       board.move!(move)
+      sleep 0.1
     end
     if board.winner == "X"
       x_player.wins += 1
@@ -29,9 +30,9 @@ class RunMatchJob
     x_player.save!
     y_player.save!
 
-    #Game 2
-    board = board_2
-    x_player, y_player = player_2, player_1
+    #Game2
+    board.reset!
+    x_player, y_player = player2, player1
     loop do
       break if board.winner
       if board.player_to_move == "X"
@@ -40,6 +41,7 @@ class RunMatchJob
         move = HTTParty.get(y_player.url, query: { board: board.to_json }).parsed_response["move"]
       end
       board.move!(move)
+      sleep 0.1
     end
     if board.winner == "X"
       x_player.wins += 1

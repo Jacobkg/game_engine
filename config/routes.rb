@@ -3,15 +3,9 @@ MyProject::Application.routes.draw do
   # See how all your routes lay out with "rake routes".
 
   # You can have the root of your site routed with "root"
-  root 'games#new'
+  root 'matches#new'
 
-  resources :games do
-    collection do
-      put :move
-      delete :reset
-    end
-  end
-
+  resources :matches
   resources :players
 
 
