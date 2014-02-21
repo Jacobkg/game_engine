@@ -1,16 +1,18 @@
 <h1>Players</h1>
 
+<%= link_to "Register Player", new_player_path %><br><br>
+
 <table>
   <tr>
     <th>Name</th>
-    <th>Wins</th>
-    <th>Losses</th>
+    <th>Matches</th>
+    <th>Rating</th>
   </tr>
   <% @players.each do |player| %>
     <tr>
       <td><%= player.name %></td>
-      <td><%= player.wins %></td>
-      <td><%= player.losses %></td>
+      <td><%= player.matches %></td>
+      <td><%= player.rating %></td>
     </tr>
   <% end %>
 </table>

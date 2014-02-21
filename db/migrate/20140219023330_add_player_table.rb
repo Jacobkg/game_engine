@@ -3,8 +3,8 @@ class AddPlayerTable < ActiveRecord::Migration
     create_table :players do |t|
       t.string :name
       t.string :url
-      t.integer :wins, default: 0
-      t.integer :losses, default: 0
+      t.integer :matches, default: 0
+      t.integer :rating, default: 1000
 
       t.timestamps
     end

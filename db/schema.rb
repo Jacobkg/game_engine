@@ -35,8 +35,8 @@ ActiveRecord::Schema.define(version: 20140219031810) do
   create_table "players", force: true do |t|
     t.string   "name"
     t.string   "url"
-    t.integer  "wins",       default: 0
-    t.integer  "losses",     default: 0
+    t.integer  "matches",    default: 0
+    t.integer  "rating",     default: 1000
     t.datetime "created_at"
     t.datetime "updated_at"
   end
