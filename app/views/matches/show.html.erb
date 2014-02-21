@@ -1,15 +1,12 @@
 <%= link_to "New Match", new_match_path %>
 <br>
-<%= simple_format(@board.display_string) %>
+<br>
+Player 1: <%= @match.player1.name %><br>
+Player 2: <%= @match.player2.name %>
+<div id="board">
+  <%= simple_format(@board.display_string) %>
+</div>
 
 Score:<br>
-X: <%= @board.x_score %><br>
-Y: <%= @board.y_score %><br>
-<br>
-<% if @board.x_score >= 11 %>
-  X Wins!
-<% elsif @board.y_score >= 11 %>
-  Y Wins!
-<% else %>
-  <div class="reload-page"></div>
-<% end %>
+X: <span id="x-score"><%= @board.x_score %></span><br>
+Y: <span id="y-score"><%= @board.y_score %></span><br>

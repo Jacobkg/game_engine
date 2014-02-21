@@ -17,6 +17,8 @@ class RunMatchJob
     match.player2.matches += 1
     match.player1.save!
     match.player2.save!
+
+    match.update_attributes! finished_at: Time.now
   end
 
   def self.play_game(board, x_player, y_player)

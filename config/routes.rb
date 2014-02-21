@@ -5,7 +5,11 @@ MyProject::Application.routes.draw do
   # You can have the root of your site routed with "root"
   root 'matches#new'
 
-  resources :matches
+  resources :matches do
+    member do
+      get :board
+    end
+  end
   resources :players
 
 

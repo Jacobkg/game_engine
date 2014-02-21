@@ -18,11 +18,24 @@
 var ready;
 ready = function() {
 
-  if ($('.reload-page').length > 0) {
-    window.setTimeout(location.reload(), 1000);
+  if ($('#board').length > 0) {
+    setTimeout(updateBoard, 1000);
   }
 
 }
 
 $(document).ready(ready);
 $(document).on('page:load', ready);
+
+var updateBoard = function() {
+  $.getJSON( document.URL + "/board.json", function( data ) {
+    if (data.finished) {
+      return true;
+    } else {
+      $("#board").html("<p>" + data.board_display.replace(/\n/g, "<br />") + "</p>");
+      $("#x-score").html(data.board.x_score);
+      $("#y-score").html(data.board.y_score);
+      setTimeout(updateBoard, 1000);
+    }
+  });
+}

@@ -28,8 +28,12 @@ class Board < ActiveRecord::Base
   end
 
   def to_json
+    properties.to_json
+  end
+
+  def properties
     { stars: stars, x_position: x_position, y_position: y_position,
-      x_score: x_score, y_score: y_score, player_to_move: player_to_move }.to_json
+      x_score: x_score, y_score: y_score, player_to_move: player_to_move }
   end
 
   def winner

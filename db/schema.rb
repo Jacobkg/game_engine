@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20140219031810) do
     t.integer  "board_id"
     t.integer  "player1_id"
     t.integer  "player2_id"
+    t.datetime "finished_at"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
